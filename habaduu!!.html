@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Happy Birthday — Ohana &amp; Stars</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-deep: #060b16;
+      --bg-mid: #0d1c36;
+      --bg-card: rgba(14, 28, 53, 0.74);
+      --bg-card-strong: rgba(11, 22, 44, 0.88);
+      --border-subtle: rgba(130, 198, 255, 0.16);
+      --border-glow: rgba(114, 214, 255, 0.42);
+      --text-primary: #f4f8ff;
+      --text-secondary: #aec7e8;
+      --text-muted: #7391b8;
+      --stitch-blue: #4ab3ff;
+      --stitch-bright: #8fd6ff;
+      --stitch-deep: #1e62b5;
+      --hibiscus-pink: #ff6b9d;
+      --hibiscus-rose: #ff99bd;
+      --star-gold: #ffd67c;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow-glow: 0 18px 50px rgba(3, 8, 20, 0.65), 0 0 36px rgba(74, 179, 255, 0.1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 84px;
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      min-height: 100dvh;
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -10%, rgba(27, 67, 128, 0.65), transparent 70%),
+        radial-gradient(circle at 85% 30%, rgba(255, 107, 157, 0.09), transparent 45%),
+        linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 65%);
+      overflow-x: hidden;
+      position: relative;
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    button, a, [role="button"] {
+      touch-action: manipulation;
+    }
+
+    #sky-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(85px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.32;
+    }
+    .orb-1 {
+      width: 340px;
+      height: 340px;
+      background: radial-gradient(circle, rgba(74, 179, 255, 0.45), transparent 70%);
+      top: -90px;
+      left: -80px;
+    }
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(255, 107, 157, 0.28), transparent 70%);
+      bottom: 10%;
+      right: -90px;
+    }
+
+    /* Compact Mobile-Friendly Sticky Header */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(6, 11, 22, 0.78);
+      border-bottom: 1px solid rgba(130, 198, 255, 0.12);
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+
+    .top-bar-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 11px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 1.22rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-scroll-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 2px 0;
+    }
+
+    .nav-scroll-wrap::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(130, 198, 255, 0.16);
+      color: var(--text-secondary);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .nav-pill:hover, .nav-pill:active {
+      color: var(--text-primary);
+      border-color: var(--border-glow);
+      background: rgba(74, 179, 255, 0.14);
+    }
+
+    .nav-pill.active {
+      background: rgba(74, 179, 255, 0.22);
+      border-color: var(--stitch-bright);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(74, 179, 255, 0.25);
+    }
+
+    .sound-btn {
+      flex-shrink: 0;
+      border-color: rgba(255, 148, 184, 0.28);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 18px 80px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 44px 0 40px;
+      display: grid;
+      grid-template-columns: 1.12fr 0.88fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(74, 179, 255, 0.11);
+      border: 1px solid rgba(138, 212, 255, 0.26);
+      color: var(--stitch-bright);
+      font-size: 0.74rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    h1.hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.45rem, 6.5vw, 4.4rem);
+      font-weight: 600;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+      color: #ffffff;
+    }
+
+    h1.hero-title em {
+      font-style: italic;
+      background: linear-gradient(120deg, var(--stitch-bright), var(--hibiscus-rose), var(--star-gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 0.98rem;
+      line-height: 1.68;
+      color: var(--text-secondary);
+      max-width: 500px;
+      margin-bottom: 24px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--stitch-blue), var(--stitch-deep));
+      color: #ffffff;
+      border: 1px solid rgba(173, 226, 255, 0.42);
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(30, 98, 181, 0.42);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(74, 179, 255, 0.48);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      border: 1px solid rgba(130, 198, 255, 0.22);
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 107, 157, 0.14);
+      border-color: rgba(255, 148, 184, 0.42);
+    }
+
+    .btn-ghost:active {
+      transform: scale(0.97);
+    }
+
+    /* Stitch Interactive Stage */
+    .stitch-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px 20px;
+      border-radius: var(--radius-lg);
+      background: linear-gradient(165deg, rgba(21, 44, 82, 0.68), rgba(9, 19, 38, 0.86));
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-glow);
+      overflow: hidden;
+    }
+
+    .stitch-halo {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74, 179, 255, 0.24), rgba(255, 107, 157, 0.08) 55%, transparent 72%);
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      animation: haloPulse 4.5s ease-in-out infinite;
+    }
+
+    @keyframes haloPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(0.96); opacity: 0.8; }
+      50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; }
+    }
+
+    .stitch-svg-wrap {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 270px;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .stitch-svg-wrap:hover {
+      transform: scale(1.025) rotate(-1deg);
+    }
+
+    .stitch-svg-wrap.boing {
+      animation: stitchBoing 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes stitchBoing {
+      0% { transform: scale(1) rotate(0deg); }
+      30% { transform: scale(1.09, 0.91) rotate(-3.5deg); }
+      60% { transform: scale(0.96, 1.05) rotate(2.5deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    .stitch-ear-left {
+      transform-origin: 98px 92px;
+      animation: earTwitchLeft 5.2s ease-in-out infinite;
+    }
+
+    .stitch-ear-right {
+      transform-origin: 222px 92px;
+      animation: earTwitchRight 5.2s ease-in-out infinite 1.9s;
+    }
+
+    @keyframes earTwitchLeft {
+      0%, 88%, 100% { transform: rotate(0deg); }
+      91% { transform: rotate(-6deg); }
+      94% { transform: rotate(3deg); }
+    }
+
+    @keyframes earTwitchRight {
+      0%, 88%, 100% { transform: rotate(0deg); }
+      91% { transform: rotate(6deg); }
+      94% { transform: rotate(-3deg); }
+    }
+
+    .stitch-bubble {
+      position: relative;
+      z-index: 1;
+      margin-top: 8px;
+      padding: 9px 15px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(138, 212, 255, 0.22);
+      font-size: 0.84rem;
+      line-height: 1.4;
+      color: var(--stitch-bright);
+      text-align: center;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sparkle-burst {
+      position: absolute;
+      pointer-events: none;
+      font-size: 0.95rem;
+      animation: floatSparkle 0.85s ease-out forwards;
+      z-index: 4;
+    }
+
+    @keyframes floatSparkle {
+      0% { opacity: 1; transform: translate(0, 0) scale(0.7); }
+      100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(1.25); }
+    }
+
+    /* Sections */
+    .section {
+      margin-top: 64px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.85rem, 4.5vw, 2.65rem);
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .section-sub {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .glass-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow-glow);
+      overflow: hidden;
+    }
+
+    /* Subtle Tropical Corner Accent */
+    .glass-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at top right, rgba(138, 212, 255, 0.1), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Envelope & Letter */
+    .envelope-box {
+      padding: 32px 22px;
+      text-align: center;
+    }
+
+    .envelope-visual {
+      width: 220px;
+      height: 142px;
+      margin: 0 auto 20px;
+      position: relative;
+      cursor: pointer;
+      perspective: 800px;
+    }
+
+    .env-body {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #1b3c70, #0f2244);
+      border: 1.5px solid rgba(138, 212, 255, 0.34);
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+    }
+
+    .env-body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 48%, rgba(138, 212, 255, 0.08) 50%, transparent 52%);
+    }
+
+    .env-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 78px;
+      background: linear-gradient(180deg, #28559c, #193766);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 2;
+    }
+
+    .envelope-visual.open .env-flap {
+      transform: rotateX(175deg);
+      z-index: 0;
+    }
+
+    .env-seal {
+      position: absolute;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--hibiscus-rose), #c93b6b);
+      border: 2px solid rgba(255, 224, 155, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+      box-shadow: 0 6px 18px rgba(255, 107, 157, 0.45);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .envelope-visual.open .env-seal {
+      opacity: 0;
+      transform: translateX(-50%) scale(0.5);
+      pointer-events: none;
+    }
+
+    .letter-sheet {
+      max-width: 640px;
+      margin: 22px auto 0;
+      padding: 26px 22px;
+      border-radius: var(--radius-md);
+      background: var(--bg-card-strong);
+      border: 1px solid rgba(138, 212, 255, 0.24);
+      text-align: left;
+      display: none;
+      animation: fadeSlideUp 0.45s ease forwards;
+    }
+
+    .letter-sheet.visible {
+      display: block;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .letter-greeting {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-style: italic;
+      color: var(--stitch-bright);
+      margin-bottom: 12px;
+    }
+
+    .letter-body p {
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 13px;
+      font-size: 0.95rem;
+    }
+
+    .letter-sign {
+      margin-top: 16px;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--hibiscus-rose);
+    }
+
+    /* Cake Section */
+    .cake-card {
+      padding: 28px 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      align-items: center;
+    }
+
+    .cake-visual-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 220px;
+    }
+
+    .flame {
+      transform-origin: center bottom;
+      animation: flameFlicker 0.22s infinite alternate;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .flame.blown {
+      opacity: 0;
+      transform: scale(0.2);
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: scaleX(0.95) scaleY(1.04) rotate(-2deg); }
+      100% { transform: scaleX(1.05) scaleY(0.96) rotate(2deg); }
+    }
+
+    .wish-box {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    /* 16px font prevents iOS Safari auto-zoom on focus */
+    .wish-input {
+      width: 100%;
+      padding: 13px 15px;
+      border-radius: var(--radius-sm);
+      background: rgba(6, 11, 22, 0.8);
+      border: 1px solid rgba(130, 198, 255, 0.24);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .wish-input:focus {
+      border-color: var(--stitch-bright);
+    }
+
+    .wish-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .wish-status {
+      min-height: 22px;
+      font-size: 0.88rem;
+      color: var(--star-gold);
+      line-height: 1.45;
+    }
+
+    /* Polaroids */
+    .polaroid-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .polaroid {
+      background: #f2f7ff;
+      color: #13243f;
+      padding: 12px 12px 18px;
+      border-radius: 12px;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.42);
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
+    }
+
+    .polaroid:nth-child(1) { transform: rotate(-1.2deg); }
+    .polaroid:nth-child(2) { transform: rotate(1deg); }
+    .polaroid:nth-child(3) { transform: rotate(-0.8deg); }
+
+    .polaroid:hover {
+      transform: rotate(0deg) translateY(-5px);
+      box-shadow: 0 22px 42px rgba(74, 179, 255, 0.24);
+    }
+
+    .polaroid-art {
+      aspect-ratio: 16 / 10;
+      border-radius: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 16px;
+      text-align: center;
+      color: #ffffff;
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 11px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .polaroid-photo {
+  width: 100%;
+  aspect-ratio: 16 / 10; 
+  object-fit: cover;
+  object-position: center;
+  border-radius: 8px;
+  display: block;
+  margin-bottom: 11px;
+  background: #13243f;
+}
+
+    .art-beach { background: linear-gradient(135deg, #134a80, #2da8e8); }
+    .art-stars { background: linear-gradient(135deg, #18234d, #4f3582); }
+    .art-hibiscus { background: linear-gradient(135deg, #942453, #f25c90); }
+
+    .polaroid-badge {
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .polaroid-caption {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #182c4d;
+      margin-bottom: 4px;
+    }
+
+    .polaroid-note {
+      font-size: 0.82rem;
+      color: #48628a;
+      line-height: 1.45;
+    }
+
+    /* Flip Cards */
+    .reasons-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .flip-card {
+      height: 176px;
+      perspective: 900px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .flip-face:hover {
+      border-color: var(--border-glow);
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(155deg, rgba(22, 49, 92, 0.94), rgba(11, 24, 48, 0.96));
+      border-color: rgba(138, 212, 255, 0.34);
+    }
+
+    .card-tag {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--stitch-bright);
+      font-weight: 600;
+    }
+
+    .card-front-text {
+      font-family: var(--font-display);
+      font-size: 1.42rem;
+      color: #ffffff;
+      line-height: 1.22;
+    }
+
+    .card-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .card-back-text {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+
+    .footer {
+      margin-top: 72px;
+      text-align: center;
+      padding-top: 24px;
+      border-top: 1px solid rgba(130, 198, 255, 0.12);
+      color: var(--text-muted);
+      font-size: 0.84rem;
+    }
+
+    /* Narrow Phone & Tablet Adjustments */
+    @media (max-width: 860px) {
+      .hero, .cake-card {
+        grid-template-columns: 1fr;
+      }
+      .polaroid-grid, .reasons-grid {
+        grid-template-columns: 1fr;
+      }
+      .polaroid:nth-child(n) {
+        transform: none;
+      }
+      .flip-card {
+        height: 156px;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .top-bar-inner {
+        flex-wrap: wrap;
+        padding: 10px 14px 8px;
+        gap: 8px;
+      }
+
+      .brand-mark {
+        order: 1;
+        font-size: 1.15rem;
+      }
+
+      .sound-btn {
+        order: 2;
+        margin-left: auto;
+      }
+
+      .nav-scroll-wrap {
+        order: 3;
+        width: 100%;
+        padding-top: 4px;
+        border-top: 1px solid rgba(130, 198, 255, 0.08);
+      }
+
+      .container {
+        padding: 0 15px 68px;
+      }
+
+      .hero {
+        padding: 28px 0 32px;
+        gap: 26px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions .btn-primary,
+      .hero-actions .btn-ghost {
+        width: 100%;
+      }
+
+      .stitch-svg-wrap {
+        max-width: 225px;
+      }
+
+      .section {
+        margin-top: 52px;
+      }
+
+      .envelope-box, .cake-card {
+        padding: 24px 16px;
+      }
+
+      .letter-sheet {
+        padding: 20px 16px;
+      }
+
+      .wish-actions .btn-primary {
+        flex: 1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="sky-canvas"></canvas>
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <a href="#top" class="brand-mark">
+        <span id="header-hibiscus"></span>
+        <span>Ohana Birthday</span>
+      </a>
+
+      <nav class="nav-scroll-wrap" aria-label="Page sections">
+        <a href="#letter" class="nav-pill">Letter</a>
+        <a href="#cake" class="nav-pill">Make a Wish</a>
+        <a href="#memories" class="nav-pill">Memories</a>
+        <a href="#ohana" class="nav-pill">626 Reasons</a>
+      </nav>
+
+      <button type="button" id="sound-toggle" class="nav-pill sound-btn" aria-pressed="false">
+        <span id="sound-icon">♪</span>
+        <span id="sound-label">Sound Off</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container" id="top">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Experiment 626 Approved • Happy Birthday To You</div>
+        <h1 class="hero-title">Happy Birthday to My <em>Important</em> Star</h1>
+        <p class="hero-sub">
+          Even across a million galaxies, nobody brings warmth, laughter, and magic quite like you.
+          Here is a little secret portal to celebrate your special day!!
+        </p>
+        <div class="hero-actions">
+          <button type="button" class="btn-primary" id="open-letter-btn">Open Birthday Letter?</button>
+          <button type="button" class="btn-ghost" id="celebrate-btn">Launch Shooting Stars!</button>
+        </div>
+      </div>
+
+      <div class="stitch-stage" id="stitch-stage">
+        <div class="stitch-halo"></div>
+        <div class="stitch-svg-wrap" id="stitch-character" title="Tap Stitch!" role="button" tabindex="0" aria-label="Interactive Stitch character">
+          <svg viewBox="0 0 320 300" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="stitchFur" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#6dc6ff" />
+                <stop offset="55%" stop-color="#3593e6" />
+                <stop offset="100%" stop-color="#1d5aa3" />
+              </linearGradient>
+              <linearGradient id="innerEarGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#ffa3c4" />
+                <stop offset="100%" stop-color="#e05889" />
+              </linearGradient>
+              <linearGradient id="bellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#9fe2ff" />
+                <stop offset="100%" stop-color="#5bb5f5" />
+              </linearGradient>
+            </defs>
+
+            <!-- Left Ear -->
+            <g class="stitch-ear-left">
+              <path d="M98 96 C54 44, 22 46, 26 84 C30 116, 68 128, 96 122 Z" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+              <path d="M89 96 C58 58, 36 60, 40 84 C43 105, 69 113, 89 110 Z" fill="url(#innerEarGrad)" />
+            </g>
+
+            <!-- Right Ear -->
+            <g class="stitch-ear-right">
+              <path d="M222 96 C266 44, 298 46, 294 84 C290 116, 252 128, 224 122 Z" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+              <path d="M231 96 C262 58, 284 60, 280 84 C277 105, 251 113, 231 110 Z" fill="url(#innerEarGrad)" />
+            </g>
+
+            <!-- Body -->
+            <ellipse cx="160" cy="218" rx="56" ry="52" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+            <ellipse cx="160" cy="224" rx="35" ry="36" fill="url(#bellyGrad)" />
+
+            <!-- Arms -->
+            <path d="M108 192 C78 196, 68 222, 88 234 C102 242, 114 226, 118 212 Z" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+            <path d="M212 192 C242 196, 252 222, 232 234 C218 242, 206 226, 202 212 Z" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+
+            <!-- Feet -->
+            <ellipse cx="124" cy="266" rx="22" ry="12" fill="#256ec2" stroke="#184987" stroke-width="2.5" />
+            <ellipse cx="196" cy="266" rx="22" ry="12" fill="#256ec2" stroke="#184987" stroke-width="2.5" />
+
+            <!-- Head -->
+            <path d="M94 126 C94 78, 226 78, 226 126 C226 168, 198 186, 160 186 C122 186, 94 168, 94 126 Z" fill="url(#stitchFur)" stroke="#184987" stroke-width="2.5" />
+
+            <!-- Subtle Forehead Markings -->
+            <path d="M148 97 Q160 92 172 97" fill="none" stroke="#1d5aa3" stroke-width="2.2" stroke-linecap="round" opacity="0.65" />
+            <path d="M153 103 Q160 100 167 103" fill="none" stroke="#1d5aa3" stroke-width="1.8" stroke-linecap="round" opacity="0.5" />
+
+            <!-- Head Tuft -->
+            <path d="M154 84 C148 64, 162 56, 166 72 C172 60, 184 68, 172 85 Z" fill="#3593e6" stroke="#184987" stroke-width="2" />
+
+            <!-- Eye Patches -->
+            <ellipse cx="135" cy="126" rx="23" ry="26" fill="#78ccff" opacity="0.45" />
+            <ellipse cx="185" cy="126" rx="23" ry="26" fill="#78ccff" opacity="0.45" />
+
+            <!-- Big Eyes -->
+            <ellipse cx="135" cy="126" rx="18" ry="22" fill="#0d192b" />
+            <ellipse cx="185" cy="126" rx="18" ry="22" fill="#0d192b" />
+            <circle cx="130" cy="118" r="6" fill="#ffffff" />
+            <circle cx="141" cy="133" r="2.8" fill="#ffffff" />
+            <circle cx="180" cy="118" r="6" fill="#ffffff" />
+            <circle cx="191" cy="133" r="2.8" fill="#ffffff" />
+
+            <!-- Nose -->
+            <ellipse cx="160" cy="143" rx="12" ry="8.5" fill="#1d3b66" />
+            <ellipse cx="157" cy="140.5" rx="4" ry="2.2" fill="#7ec8ff" opacity="0.75" />
+
+            <!-- Happy Smile -->
+            <path d="M138 156 Q160 174 182 156" fill="none" stroke="#142b4d" stroke-width="3.2" stroke-linecap="round" />
+
+            <!-- Hibiscus Flower behind ear -->
+            <g transform="translate(204, 88)">
+              <circle cx="0" cy="-11" r="9" fill="#ff7aa8" />
+              <circle cx="10.5" cy="-3.5" r="9" fill="#ff6196" />
+              <circle cx="6.5" cy="9" r="9" fill="#f24b84" />
+              <circle cx="-6.5" cy="9" r="9" fill="#ff6196" />
+              <circle cx="-10.5" cy="-3.5" r="9" fill="#ff7aa8" />
+              <circle cx="0" cy="0" r="4.5" fill="#ffd479" />
+            </g>
+          </svg>
+        </div>
+        <div class="stitch-bubble" id="stitch-speech">Meega nala kweesta! Tap Stitch for birthday wishes.</div>
+      </div>
+    </section>
+
+    <section class="section" id="letter">
+      <div class="section-head">
+        <h2 class="section-title">A Letter For You</h2>
+        <span class="section-sub">Sealed with aloha &amp; starlight</span>
+      </div>
+      <div class="glass-card envelope-box">
+        <div class="envelope-visual" id="envelope" role="button" tabindex="0" aria-label="Open birthday letter">
+          <div class="env-flap"></div>
+          <div class="env-seal" id="envelope-seal"></div>
+          <div class="env-body"></div>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Read it all ha?? 
+        </p>
+
+        <div class="letter-sheet" id="letter-sheet">
+          <div class="letter-greeting">Happy Birthday, To My "Important" Person,</div>
+          <div class="letter-body">
+            <p>
+              Soo uhmm, Happy Birthday to you, Lilayy(Ganda!!!), today is your birthday Nov 22 and i wanted to say na 
+              enjoy your very special day of your birth and i wish you better days, healthier life, full of happiness, 
+              and a strength to embrace every thing that is happening in your life.
+            </p>
+            <p>
+              Don't always burn yourself out ha?? You have the habit to do things solo even though may ka group ka, wag
+              kang masanay na ganon, pa'no kung mapunta kana sa college niyan tapos naulit 'yan, subukan mo lang pupuntahan
+              kita kahit malayo ka para pagalitan ka, i will know if binu-burn out mo sarili mo. And bawas-bawas sa maalat and
+              softdrinks naman, ikaw panaman pasaway kahit alam mong bawal iinom pa ng coke o kaya sting, iwas-iwas muna
+              pag-inom naman kasi 'yun lang naman kasi hindi ka immortal no??
+            </p>
+            <p>
+              And another thing i'm always here if you need or want to talk to, you're an independent woman i know, but that doesnt
+              mean na hindi ka na sasandal lalo na sa mga love ones mo. Lalo na kung mabigat problems mo or patong-patong na talaga
+              and i know na minsan ko lang sabihin sayo 'to but, "you can cry at my shoulder ha?" you have someone to lean in to
+              i'm here to hear what you cannot shout to the world, your silent cries, your unsaid thoughts, all of it. I'm here. Always.
+            </p>
+            <p>
+              And lapit ka lang lagi kay papa G ha?? if may biglaang nangyari and 'di mo alam gagawin mo, Papa G is always
+              here for us and handa siya lagi makinig and i forgot to mention na kakampi siya. Lastly,
+              may this new year of your life bring you gentle mornings, big adventures, good health, and every
+              happiness you quietly wish for. 
+            </p>
+          </div>
+          <div class="letter-sign">With all my heart, always.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cake">
+      <div class="section-head">
+        <h2 class="section-title">Make a Birthday Wish</h2>
+        <span class="section-sub">Type your wish &amp; blow out the candle</span>
+      </div>
+      <div class="glass-card cake-card">
+        <div class="cake-visual-wrap">
+          <svg viewBox="0 0 240 215" width="215" height="195" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="120" cy="188" rx="92" ry="14" fill="rgba(138, 212, 255, 0.22)" />
+            <rect x="44" y="132" width="152" height="52" rx="14" fill="#2663b8" stroke="#6cc2ff" stroke-width="2" />
+            <rect x="58" y="92" width="124" height="44" rx="12" fill="#3b88e8" stroke="#8ad4ff" stroke-width="2" />
+            <path d="M58 100 Q73 114 88 100 T118 100 T148 100 T182 100 L182 92 L58 92 Z" fill="#ff85b1" />
+            <rect x="114" y="52" width="12" height="40" rx="4" fill="#fff7e6" />
+            <line x1="115" y1="62" x2="125" y2="68" stroke="#ff6b9d" stroke-width="2.2" />
+            <line x1="115" y1="74" x2="125" y2="80" stroke="#ff6b9d" stroke-width="2.2" />
+            <g class="flame" id="cake-flame">
+              <path d="M120 20 C132 34, 130 48, 120 52 C110 48, 108 34, 120 20 Z" fill="#ffd479" />
+              <path d="M120 30 C126 38, 125 46, 120 49 C115 46, 114 38, 120 30 Z" fill="#ff7b54" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="wish-box">
+          <label for="wish-input" style="font-size: 0.88rem; color: var(--text-secondary);">
+            Whisper your birthday wish into the night sky:
+          </label>
+          <input
+            type="text"
+            id="wish-input"
+            class="wish-input"
+            placeholder="More travel, endless laughter, sunny days..."
+            maxlength="120"
+          />
+          <div class="wish-actions">
+            <button type="button" class="btn-primary" id="blow-candle-btn">Blow Out Candle</button>
+            <button type="button" class="btn-ghost" id="relight-btn">Relight</button>
+          </div>
+          <div class="wish-status" id="wish-status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="memories">
+  <div class="section-head">
+    <h2 class="section-title">Little Keepsake Moments</h2>
+    <span class="section-sub">Snapshots of why today matters</span>
+  </div>
+  <div class="polaroid-grid">
+    <article class="polaroid">
+      <img src="picture 1.jpg" alt="Memory 1" class="polaroid-photo" />
+      <div class="polaroid-caption">01 • Calm &amp; Bright</div>
+      <p class="polaroid-note">Like ocean waves at golden hour—steady, refreshing, and impossible not to admire.(favorite baby pic btw)</p>
+    </article>
+
+    <article class="polaroid">
+      <img src="picture 2.jpg" alt="Memory 2" class="polaroid-photo" />
+      <div class="polaroid-caption">02 • Late-Night Talks/deep talks</div>
+      <p class="polaroid-note">The kind of conversations that make time slip away without anyone noticing.(one of the favorite pic right neow)</p>
+    </article>
+
+    <article class="polaroid">
+      <img src="picture 3.jpg" alt="Memory 3" class="polaroid-photo" />
+      <div class="polaroid-caption">03 • Unmistakably You</div>
+      <p class="polaroid-note">Straightforward, kind but scary like, and full of life—bringing color wherever you go.(do i have to explain this?? aughhh)</p>
+    </article>
+  </div>
+</section>
+
+    <section class="section" id="ohana">
+      <div class="section-head">
+        <h2 class="section-title">626 Little Reasons</h2>
+        <span class="section-sub">Tap any card to flip it</span>
+      </div>
+      <div class="reasons-grid" id="reasons-grid"></div>
+    </section>
+
+    <footer class="footer">
+      Created by Jukey, and guided by Stitch
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      function createHibiscusSVG(size) {
+        return `<svg width="${size}" height="${size}" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="18" cy="8" r="6.5" fill="#ff7aa8"/>
+          <circle cx="27.5" cy="14.5" r="6.5" fill="#ff5c93"/>
+          <circle cx="24" cy="25.5" r="6.5" fill="#eb427c"/>
+          <circle cx="12" cy="25.5" r="6.5" fill="#ff5c93"/>
+          <circle cx="8.5" cy="14.5" r="6.5" fill="#ff7aa8"/>
+          <circle cx="18" cy="17.5" r="3.4" fill="#ffd479"/>
+        </svg>`;
+      }
+
+      document.getElementById('header-hibiscus').innerHTML = createHibiscusSVG(22);
+      document.getElementById('envelope-seal').innerHTML = createHibiscusSVG(26);
+
+      /* Web Audio Ukulele-Inspired Chimes */
+      let audioCtx = null;
+      let soundEnabled = false;
+
+      function ensureAudio() {
+        if (!audioCtx) {
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          if (Ctx) audioCtx = new Ctx();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+      }
+
+      function playChime(notes) {
+        if (!soundEnabled) return;
+        ensureAudio();
+        if (!audioCtx) return;
+
+        const now = audioCtx.currentTime;
+        notes.forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.095);
+
+          gain.gain.setValueAtTime(0.001, now + idx * 0.095);
+          gain.gain.exponentialRampToValueAtTime(0.11, now + idx * 0.095 + 0.025);
+          gain.gain.exponentialRampToValueAtTime(0.0008, now + idx * 0.095 + 0.58);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.095);
+          osc.stop(now + idx * 0.095 + 0.62);
+        });
+      }
+
+      const soundBtn = document.getElementById('sound-toggle');
+      const soundLabel = document.getElementById('sound-label');
+      soundBtn.addEventListener('click', () => {
+        soundEnabled = !soundEnabled;
+        soundBtn.setAttribute('aria-pressed', String(soundEnabled));
+        soundBtn.classList.toggle('active', soundEnabled);
+        soundLabel.textContent = soundEnabled ? 'Sound On' : 'Sound Off';
+        if (soundEnabled) {
+          playChime([523.25, 659.25, 783.99, 1046.5]);
+        }
+      });
+
+      /* Starfield & Shooting Stars Canvas */
+      const canvas = document.getElementById('sky-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = 0;
+      let height = 0;
+      let stars = [];
+      let shootingStars = [];
+
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        const count = Math.min(115, Math.floor((width * height) / 10500));
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          r: Math.random() * 1.6 + 0.4,
+          alpha: Math.random() * 0.78 + 0.22,
+          twinkleSpeed: Math.random() * 0.02 + 0.005,
+          phase: Math.random() * Math.PI * 2
+        }));
+      }
+
+      function spawnShootingStar(burst) {
+        const count = burst ? 6 : 1;
+        for (let i = 0; i < count; i++) {
+          shootingStars.push({
+            x: Math.random() * width * 0.85,
+            y: Math.random() * height * 0.42,
+            vx: Math.random() * 4.5 + 4.5,
+            vy: Math.random() * 2.4 + 1.8,
+            life: 1,
+            decay: Math.random() * 0.018 + 0.014
+          });
+        }
+      }
+
+      function drawSky() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (const s of stars) {
+          s.phase += s.twinkleSpeed;
+          const a = s.alpha * (0.65 + 0.35 * Math.sin(s.phase));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(225, 242, 255, ${a.toFixed(3)})`;
+          ctx.fill();
+        }
+
+        for (let i = shootingStars.length - 1; i >= 0; i--) {
+          const st = shootingStars[i];
+          st.x += st.vx;
+          st.y += st.vy;
+          st.life -= st.decay;
+
+          if (st.life <= 0) {
+            shootingStars.splice(i, 1);
+            continue;
+          }
+
+          const grad = ctx.createLinearGradient(st.x, st.y, st.x - st.vx * 6, st.y - st.vy * 6);
+          grad.addColorStop(0, `rgba(255, 214, 124, ${st.life})`);
+          grad.addColorStop(0.5, `rgba(143, 214, 255, ${st.life * 0.6})`);
+          grad.addColorStop(1, 'rgba(143, 214, 255, 0)');
+
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2.2;
+          ctx.beginPath();
+          ctx.moveTo(st.x, st.y);
+          ctx.lineTo(st.x - st.vx * 6, st.y - st.vy * 6);
+          ctx.stroke();
+        }
+
+        requestAnimationFrame(drawSky);
+      }
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      drawSky();
+
+      setInterval(() => {
+        if (Math.random() < 0.55) spawnShootingStar(false);
+      }, 3400);
+
+      document.getElementById('celebrate-btn').addEventListener('click', () => {
+        spawnShootingStar(true);
+        playChime([587.33, 739.99, 880, 1174.66]);
+      });
+
+      /* Interactive and Effect on Stitchhhh */
+      const stitchStage = document.getElementById('stitch-stage');
+      const stitchEl = document.getElementById('stitch-character');
+      const stitchSpeech = document.getElementById('stitch-speech');
+      const stitchLines = [
+        'Happy birthday!!! Lilayy, i wish for you a best day, everyday!!',
+        'More happiness, zero bad days, maximum cuteness!!!',
+        'You are shining bright like a diamond(HAHAHAHAHA).',
+        'Make a big wish!! Stitch and Jukeyy is cheering for you!!'
+      ];
+      let lineIdx = 0;
+
+      function emitSparkles() {
+        const glyphs = ['✦', '✿', '★'];
+        for (let i = 0; i < 5; i++) {
+          const span = document.createElement('span');
+          span.className = 'sparkle-burst';
+          span.textContent = glyphs[i % glyphs.length];
+          span.style.color = i % 2 === 0 ? '#ffd67c' : '#ff99bd';
+          span.style.left = `${45 + (Math.random() * 20 - 10)}%`;
+          span.style.top = `${42 + (Math.random() * 16 - 8)}%`;
+          span.style.setProperty('--dx', `${(Math.random() - 0.5) * 110}px`);
+          span.style.setProperty('--dy', `${-40 - Math.random() * 55}px`);
+          stitchStage.appendChild(span);
+          setTimeout(() => span.remove(), 860);
+        }
+      }
+
+      function triggerStitch() {
+        stitchEl.classList.remove('boing');
+        void stitchEl.offsetWidth;
+        stitchEl.classList.add('boing');
+        emitSparkles();
+        lineIdx = (lineIdx + 1) % stitchLines.length;
+        stitchSpeech.textContent = stitchLines[lineIdx];
+        playChime([659.25, 783.99, 1046.5]);
+      }
+
+      stitchEl.addEventListener('click', triggerStitch);
+      stitchEl.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          triggerStitch();
+        }
+      });
+
+      /* Ang Envelope ko */
+      const envelope = document.getElementById('envelope');
+      const letterSheet = document.getElementById('letter-sheet');
+
+      function openEnvelope() {
+        envelope.classList.add('open');
+        setTimeout(() => {
+          letterSheet.classList.add('visible');
+          letterSheet.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 300);
+        playChime([523.25, 659.25, 783.99, 1046.5]);
+      }
+
+      envelope.addEventListener('click', openEnvelope);
+      envelope.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEnvelope();
+        }
+      });
+
+      document.getElementById('open-letter-btn').addEventListener('click', () => {
+        document.getElementById('letter').scrollIntoView({ behavior: 'smooth' });
+        setTimeout(openEnvelope, 350);
+      });
+
+      /* Ang Kandilaaa */
+      const flame = document.getElementById('cake-flame');
+      const wishInput = document.getElementById('wish-input');
+      const wishStatus = document.getElementById('wish-status');
+
+      document.getElementById('blow-candle-btn').addEventListener('click', () => {
+        flame.classList.add('blown');
+        spawnShootingStar(true);
+        const wishText = wishInput.value.trim();
+        wishStatus.textContent = wishText
+          ? `Wish sent to the stars: "${wishText}"`
+          : 'Candle blown out! May your birthday wish come true.';
+        playChime([783.99, 659.25, 523.25]);
+      });
+
+      document.getElementById('relight-btn').addEventListener('click', () => {
+        flame.classList.remove('blown');
+        wishStatus.textContent = 'Candle relit and ready for another wish.';
+        playChime([523.25, 659.25]);
+      });
+
+      /* 6 Reason :P */
+      const reasons = [
+        { front: 'Your Kind Heart', back: 'You notice small details and care deeply without ever making a fuss.' },
+        { front: 'Her Beauty', back: 'Your beauty is one of the hidden gem hiding among the stars.' },
+        { front: 'Bright Energy', back: 'You bring warmth into quiet rooms and calm into busy ones.' },
+        { front: 'True Spirit Of Lilay', back: 'True, loyal, trustworthy, and someone worth celebrating every single day.' },
+        { front: 'Unique Spark', back: 'Nobody else has your exact mix of humor, sweetness, and charm.' },
+        { front: 'Every Tomorrow', back: 'The best chapters ahead of you are only just getting started.' }
+      ];
+
+      const reasonsGrid = document.getElementById('reasons-grid');
+      reasons.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'flip-card';
+        card.setAttribute('role', 'button');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', `Flip card ${idx + 1}: ${item.front}`);
+
+        card.innerHTML = `
+          <div class="flip-inner">
+            <div class="flip-face">
+              <span class="card-tag">Reason #${idx + 1}</span>
+              <div class="card-front-text">${item.front}</div>
+              <span class="card-hint">Tap to reveal</span>
+            </div>
+            <div class="flip-face flip-back">
+              <span class="card-tag">Ohana Note</span>
+              <p class="card-back-text">${item.back}</p>
+              <span class="card-hint">Tap to flip back</span>
+            </div>
+          </div>
+        `;
+
+        const toggleFlip = () => {
+          card.classList.toggle('flipped');
+          playChime([587.33, 880]);
+        };
+
+        card.addEventListener('click', toggleFlip);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleFlip();
+          }
+        });
+
+        reasonsGrid.appendChild(card);
+      });
+    })();
+  </script>
+</body>
+</html>
